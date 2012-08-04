@@ -90,6 +90,27 @@ Sylvester.Matrix.Zero = function(n, m) {
   return Sylvester.Matrix.create(els);
 };
 
+Sylvester.Matrix.RepMat = function(vector, times, dim) {
+  // dim: 0 => replicate as row matrix, 1 => replicate as column
+  // Preconditions:
+  // - vector is a Sylvester.Vector type or a 1-D Array
+  // - times is an integer
+  // - dim is 0 or 1 (return null otherwise)
+
+  dim = dim || 0;
+
+  if (dim !== 0 && dim !== 1) return null;
+
+  var V = vector.elements || vector;
+  var els = new Array(times);
+  while (times--) {
+    els[times] = V;
+  }
+  var M = Sylvester.Matrix.create(els);
+
+  return (dim === 1 ? M.transpose() : M);
+};
+
 Sylvester.Matrix.prototype = {
   e: function(i,j) {
     if (i < 1 || i > this.elements.length || j < 1 || j > this.elements[0].length) { return null; }
