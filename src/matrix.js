@@ -256,6 +256,50 @@ Sylvester.Matrix.prototype = {
     return m;
   },
 
+  sum: function(d) { // d is dimension, 0 means column sum and 1 means row sum
+    d = d || 0;
+    if (this.cols() === 0 || this.rows() === 0) { return null; }
+    switch (d) {
+      case 0:
+        return Sylvester.Vector.create(
+            this.elements.reduce(function (a, b) {
+              var i = a.length;
+              if (i === 0) return b.slice(0);
+
+              var ret = new Array(i);
+              while (i--) {
+                ret[i] = a[i] + b[i];
+              }
+              return ret;
+            }, []));
+      case 1:
+        var i = this.rows();
+        var els = new Array(i);
+        while (i--) {
+          els[i] = this.elements[i].reduce(
+              function (a, b) { return a + b; },
+              0);
+        }
+        return Sylvester.Vector.create(els);
+      default:
+        return null;
+    }
+  },
+
+  mean: function(d) { // d is the same as above
+    d = d || 0;
+    var rows = this.rows(), cols = this.cols();
+    if (cols === 0 || rows === 0) { return null; }
+    switch (d) {
+      case 0:
+        return this.sum(d).multiply(1.0 / rows);
+      case 1:
+        return this.sum(d).multiply(1.0 / cols);
+      default:
+        return null;
+    }
+  },
+
   indexOf: function(x) {
     if (this.elements.length === 0) { return null; }
     var index = null, ni = this.elements.length, i, nj = this.elements[0].length, j;

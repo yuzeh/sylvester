@@ -334,4 +334,25 @@ JS.ENV.MatrixSpec = JS.Test.describe("Matrix", function() { with(this) {
       [0,0,0,7]
     ]))
   }})
+
+  test("sum", function() { with(this) {
+    var m = $M([
+      [1, 4, 2, 3],
+      [2, 1, 1, 3],
+      [5, 3, 2, 1],
+    ]);
+    assert(m.sum(0).eql([8, 8, 5, 7]));
+    assert(m.sum(1).eql([10, 7, 11]));
+  }})
+
+
+  test("mean", function() { with(this) {
+    var m = $M([
+      [1, 4, 2, 3],
+      [2, 1, 1, 3],
+      [5, 3, 2, 1],
+    ]);
+    assert(m.mean(0).eql([8/3, 8/3, 5/3, 7/3]));
+    assert(m.mean(1).eql([10/4, 7/4, 11/4]));
+  }})
 }})
